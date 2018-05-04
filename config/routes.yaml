@@ -1,3 +1,4 @@
+#nom de la route
 #index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+#    path: /bonjour #le chemin que l'on veut faire correspondre
+#    controller: App\Controller\HomeController::bonjour  #le controlleur à appeler : Mon\Namespace\MaClasse::maMethode
