@@ -1,0 +1,1 @@
+Créer une page  pour l'url /exercice1/comment-allez-vous, qui affiche "bien, merci"

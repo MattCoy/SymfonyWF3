@@ -26,4 +26,13 @@ class HomeController
         //on envoie une réponse : on affiche bonjour avec un peu de html
         return new Response('<html><body><strong>Bonjour !</strong></body></html>');
     }
+
+    /**
+     * @Route("/exercice1/comment-allez-vous")
+     */
+    public function caVa(){
+
+        //on envoie une réponse
+        return new Response('<html><body><strong>Bien , merci !</strong></body></html>');
+    }
 }
