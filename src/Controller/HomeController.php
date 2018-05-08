@@ -31,7 +31,7 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/bonjour/")
+     * @Route("/bonjour/", name="bonjour")
      */
     //déclaration de notre méthode
     public function bonjour(){
@@ -71,7 +71,7 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/exercice1/comment-allez-vous")
+     * @Route("/exercice1/comment-allez-vous", name="exercice1")
      */
     public function caVa(){
 
@@ -80,7 +80,7 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/exercice2/heure")
+     * @Route("/exercice2/heure", name="exercice2")
      */
     public function quelleHeure(){
         $date = new \DateTime(date('Y-m-d H:i:s'));
