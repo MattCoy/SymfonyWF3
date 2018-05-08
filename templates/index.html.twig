@@ -8,5 +8,8 @@
 <body>
     <h1>Ceci est ma page d'accueil</h1>
     Bonjour {{ nom }}
+    <p><a href="bonjour/">Lien vers la page bonjour</a></p>
+    <p><a href="{{ path('bonjourNom', {nom: 'titi'}) }}">Lien vers la page bonjour titi</a></p>
+    {# path prends comme premier argument le nom de la route et ensuite on déclare les placeholder (ici  nom) en leur attribuant une valeur#}
 </body>
 </html>

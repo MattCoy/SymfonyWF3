@@ -1,4 +1,4 @@
-{# templates/index.html.twig #}
+{# templates/bonjour.html.twig #}
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +6,8 @@
     <title>HomePage</title>
 </head>
 <body>
-    <h1>Ceci est ma page d'accueil</h1>
+    <h1>Ceci n'est pas ma page d'accueil</h1>
     Bonjour {{ nom }}
+<a href="{{ path('home') }}">Accueil</a>
 </body>
 </html>

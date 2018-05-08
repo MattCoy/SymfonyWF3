@@ -18,7 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/",
+     *     name="home"
+     * )
      */
     public function home(){
         $nom = 'toto';
@@ -54,6 +56,21 @@ class HomeController extends Controller
     }
 
     /**
+     * cette route va rediriger vers home
+     *
+     * @Route("/testredirect/", name="redirectHome")
+     *
+     */
+    public function redirectHome(){
+        //on peut imaginer que l'on fait un traitement ici
+        // par exemple enregistrer un nouvel article ou produit...
+        //puis rediriger vers une autre page
+        //la route doir être nommée: on nomme la route / "home"
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
      * @Route("/exercice1/comment-allez-vous")
      */
     public function caVa(){
@@ -83,6 +100,8 @@ class HomeController extends Controller
      * )
      */
     public function bonjourPseudoAge($pseudo, $age){
+        //la récupération des variables ne se fait pas par l'ordre mais par le nom de la variable
+        //qui doit correspondre au nom du placeholder
         return $this->render('exercice3.html.twig',
             array('age' => $age,
                   'pseudo' => $pseudo
