@@ -1,0 +1,3 @@
+faire en sorte que toutes les pages héritent de notre layout (layout.html.twig) 
+et aient à accès à bootstrap et jquery
+

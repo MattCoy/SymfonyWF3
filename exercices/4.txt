@@ -1,5 +1,10 @@
-Créer une page  pour les url de type /exercice3/25/toto
+Créer un menu, sur toutes les pages suivantes qui permette de naviguer entre elles
+pages accessibles : 
+ /
+ /bonjour/
+ /bonjour/toto
+ /exercice1/comment-allez-vous
+ /exercice2/heure
+ /exercice3/33/toto
 
-Ou 25 est un placeholder qui représente un age (donc uniquement des chiffres) et toto un pseudo (donc uniquement des lettres)
-Créer une vue (exercice3.html.twig) qui va afficher, Bonjour 'pseudo' tu as 'age' ans
-Mettre an au singulier si age = 1
+

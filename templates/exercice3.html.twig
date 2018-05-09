@@ -1,20 +1,8 @@
-{# templates/index.html.twig #}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>HomePage</title>
-</head>
-<body>
-    <nav>
-        <a href="{{ path('home') }}">Accueil</a>
-        <a href="{{ path('bonjour') }}">Bonjour</a>
-        <a href="{{ path('bonjourNom', {nom: 'toto'}) }}">Bonjour Toto</a>
-        <a href="{{ path('exercice1') }}">Comment allez vous?</a>
-        <a href="{{ path('exercice2') }}">Quelle heure est-il?</a>
-        <a href="{{ path('exercice3', {pseudo: 'toto', age:'33'}) }}">Bonjour Toto avec âge?</a>
-    </nav>
-    <h1>Ceci est ma page d'accueil</h1>
+{# templates/exercice3.html.twig #}
+{%  extends('layout.html.twig') %}
+{% block title %}Page Exercice3{% endblock %}
+
+{%  block content %}
+    <h1>Exercice3</h1>
     Bonjour {{ pseudo }}, tu as {{ age }} {% if age == 1 %}an{% else %}ans{% endif %}
-</body>
-</html>
+{% endblock %}

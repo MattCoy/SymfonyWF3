@@ -1,23 +1,21 @@
 {# templates/index.html.twig #}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>HomePage</title>
-</head>
-<body>
-    <nav>
-        <a href="{{ path('home') }}">Accueil</a>
-        <a href="{{ path('bonjour') }}">Bonjour</a>
-        <a href="{{ path('bonjourNom', {nom: 'toto'}) }}">Bonjour Toto</a>
-        <a href="{{ path('exercice1') }}">Comment allez vous?</a>
-        <a href="{{ path('exercice2') }}">Quelle heure est-il?</a>
-        <a href="{{ path('exercice3', {pseudo: 'toto', age:'33'}) }}">Bonjour Toto avec âge?</a>
-    </nav>
+
+{# on utilise le mot clé extends qui permet de définir de quel layout cette vue va hériter
+    Comme pour les classes php, une vue ne peut hériter que d'un layout
+    Par contre une vue peut hériter d'un layout qui hérite lui même d'un autre layout
+    Twig va chercher directement les vues dans templates/, il suffit donc ici de lui donner layout.html.twig en paramètre
+#}
+{% extends 'layout.html.twig' %}
+
+{# le block title va remplir la balise <title>#}
+{% block title %}Accueil{% endblock %}
+
+{# le block content va devenir le contenu de la page#}
+{%  block content %}
     <h1>Ceci est ma page d'accueil</h1>
     Bonjour {{ nom }}
     <p><a href="bonjour/">Lien vers la page bonjour</a></p>
     <p><a href="{{ path('bonjourNom', {nom: 'titi'}) }}">Lien vers la page bonjour titi</a></p>
-    {# path prends comme premier argument le nom de la route et ensuite on déclare les placeholder (ici  nom) en leur attribuant une valeur#}
-</body>
-</html>
+{% endblock %}
+
+{# pour l'instant, on a pas besoin de remplir le block javascript#}

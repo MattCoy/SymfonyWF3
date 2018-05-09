@@ -1,0 +1,43 @@
+{# templates/layout.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{%  endblock %}</title>
+    {% block css %}
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    {% endblock %}
+</head>
+<body>
+    <!-- Grey with black text -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" href="#">Symfony</a>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link"  href="{{ path('home') }}">Accueil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  href="{{ path('bonjour') }}">Bonjour</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  href="{{ path('bonjourNom', {nom: 'toto'}) }}">Bonjour Toto</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  href="{{ path('exercice1') }}">Comment allez vous?</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  href="{{ path('exercice2') }}">Quelle heure est-il?</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  href="{{ path('exercice3', {pseudo: 'toto', age:'33'}) }}">Bonjour Toto avec âge?</a>
+            </li>
+        </ul>
+    </nav>
+
+    {%  block content %}{% endblock %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+    {%  block javascript %}{% endblock %}
+</body>
+</html>
