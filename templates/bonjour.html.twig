@@ -4,6 +4,6 @@
 
 {%  block content %}
     <h1>Ceci n'est pas ma page d'accueil</h1>
-    Bonjour {{ nom }}
+    {{ include('bonjour/bonjour.html.twig', {pseudo : nom}) }}
     <a href="{{ path('home') }}">Accueil</a>
 {%  endblock %}

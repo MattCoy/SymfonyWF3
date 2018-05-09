@@ -13,7 +13,16 @@
 {# le block content va devenir le contenu de la page#}
 {%  block content %}
     <h1>Ceci est ma page d'accueil</h1>
-    Bonjour {{ nom }}
+
+    {# j'appelle le template qui permet d'afficher bonjour nom #}
+    {{ include('bonjour/bonjour.html.twig', {pseudo : nom}) }}
+    {#
+        le template se trouve dans le sous dossier bonjour
+        je lui passe en paramètre l'information nécéssaire à l'affichage
+        pseudo est le nom du paramètre et donc le nom de la variable qui sera utilisée dans bonjour/bonjour.html.twig
+        Nom est ce que l'on souhaite afficher, il a été passé en paramètre de la vue dans le controlleur
+    #}
+
     <p><a href="bonjour/">Lien vers la page bonjour</a></p>
     <p><a href="{{ path('bonjourNom', {nom: 'titi'}) }}">Lien vers la page bonjour titi</a></p>
 {% endblock %}
