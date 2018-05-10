@@ -1,0 +1,3 @@
+Créer une page qui va afficher les détails d'un article.
+On utilise l'id de l'article pour récupérer l'article (placeholder dans l'url)
+
