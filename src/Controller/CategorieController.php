@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Categorie;
+use App\Form\CategorieType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -10,8 +12,53 @@ class CategorieController extends Controller
 {
     /**
      * @Route("/categorie/add", name="categorie_add")
+     * $request va contenir les infos de la requête http et notamment $_GET ou $_POST
      */
-    public function addCategorie()
+    public function addCategorie(Request $request)
+    {
+        //je crée un nouvel objet Categorie
+        $categorie = new Categorie();
+
+        //je crée mon formulaire à partir de cette classe
+        $form = $this->createForm(CategorieType::class, $categorie);
+
+        //je demande à mon objet Form de prendre en charge les données envoyées (contenues dans la requête HTTP)
+        $form->handleRequest($request);
+
+        //si le formulaire a été envoyé et si les données sont valides
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // $form->getData() contient les données envoyées
+
+            // ici on charge le formulaire de remplir notre objet catégorie avec ces données
+            $categorie = $form->getData();
+
+            // maintenant, on peut enregistrer cette nouvelle catégorie
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($categorie);
+            $entityManager->flush();
+
+            //on crée un message flash
+            $this->addFlash(
+                'success',
+                'Catégorie ajoutée !'
+            );
+
+            //on renvoie sur la liste des catégories par exemple
+            return $this->redirectToRoute('categorie_last5');
+        }
+
+        //je passe en paramètre la "vue" du formulaire
+        return $this->render('categorie/categorie.add.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
+
+
+
+    //ajout en dur sans formulaire
+    /*public function addCategorie()
     {
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -32,7 +79,7 @@ class CategorieController extends Controller
         $entityManager->flush();
 
         return $this->render('categorie/categorie.add.html.twig');
-    }
+    }*/
 
 
     /**
