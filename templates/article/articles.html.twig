@@ -3,7 +3,18 @@
 {% block title %}Articles | all{% endblock %}
 
 {% block content %}
-    {%  for article in articles %}
+
+    {# pour afficher tout type de message flash #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {# affichage des articles #}
+    {% for article in articles %}
         <h1>{{ article.title }}</h1>
         <small> publié par {{ article.author }} le {{ article.datepubli|date('d/m/Y') }}</small>
         <p>{{ article.content }}</p>

@@ -19,12 +19,12 @@ class CategorieRepository extends ServiceEntityRepository
         parent::__construct($registry, Categorie::class);
     }
 
-    public function findLast5(){
+    public function findLast5()
+    {
         $querybuilder = $this->createQueryBuilder('c')
             ->orderBy('c.id', 'DESC')
             ->setMaxResults(5)
-            ->getQuery()
-        ;
+            ->getQuery();
 
         return $querybuilder->execute();
     }

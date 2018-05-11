@@ -16,7 +16,8 @@ class ArticleController extends Controller
      * @Route("/article/add", name="addArticle")
      *
      */
-    public function addArticle(){
+    public function addArticle()
+    {
 
         //$entityManager est l'objet qui va nous permettre d'enregistrer des infos dans la base
         $entityManager = $this->getDoctrine()->getManager();
@@ -61,11 +62,11 @@ class ArticleController extends Controller
         //nous permet de renvoyer un message d'erreur si aucun id ne correspond
         if (!$article) {
             throw $this->createNotFoundException(
-                'No article found for id '.$id
+                'No article found for id ' . $id
             );
         }
 
-        return $this->render('article/article.html.twig', array('article'=>$article));
+        return $this->render('article/article.html.twig', array('article' => $article));
 
     }
 
@@ -86,7 +87,7 @@ class ArticleController extends Controller
             );
         }
 
-        return $this->render('article/articles.html.twig', array('articles'=>$articles));
+        return $this->render('article/articles.html.twig', array('articles' => $articles));
 
     }
 
@@ -109,9 +110,68 @@ class ArticleController extends Controller
         //articles2 est un tableau d'objets articles
 
         return $this->render('article/articles.recents.html.twig', array(
-                                                                            'articles' => $articles,
-                                                                            'articles2' => $articles2
+            'articles' => $articles,
+            'articles2' => $articles2
         ));
 
+    }
+
+    /**
+     * @Route("/article/update/{id}",
+     *     name="article_update",
+     *     requirements={"id":"\d+"}
+     * )
+     */
+    public function updateArticle(Article $article)
+    {
+        // le ParamConverter convertit automatiquement l'id en objet Article
+
+        //Ensuite je peut modifier mon article
+        $article->setTitle('titre modifié');
+
+        //récupération du manager
+        $entityManager = $this->getDoctrine()->getManager();
+
+        //ici pas besoin de faire $entityManager->persist($article);
+        //car doctrine a déjà en mémoire cette entité, puisqu'il l'a récupéré dans la base
+
+        $entityManager->flush();
+        //à ce moment, doctrine sait que $article existe déjà dans la base et va donc faire un update au lieu d'un insert !
+
+        //message flash
+        $this->addFlash(
+            'success',
+            'Article modifié !'
+        );
+
+        //on redirige sur la liste des 5 derniers articles
+        return $this->redirectToRoute('articles_showAll');
+    }
+
+    /**
+     * @Route("/article/delete/{id}",
+     *     name="article_delete",
+     *     requirements={"id":"\d+"}
+     * )
+     */
+    public function deleteArticle(Article $article)
+    {
+        // le ParamConverter convertit automatiquement l'id en objet Article
+
+        //récupération du manager
+        $entityManager = $this->getDoctrine()->getManager();
+
+        //Je veux supprimer cet article
+        $entityManager->remove($article);
+
+        //j'execute les requêtes
+        $entityManager->flush();
+        $this->addFlash(
+            'warning',
+            'Article supprimé !'
+        );
+
+        //on redirige sur la liste des 5 derniers articles
+        return $this->redirectToRoute('articles_showAll');
     }
 }
