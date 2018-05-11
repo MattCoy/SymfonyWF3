@@ -13,6 +13,22 @@
             </div>
 
             <div class="col-md-6">
+                {# on vérifie s'il y a des messages de type 'success' #}
+                {#{% for message in app.flashes('success') %}#}
+                    {#<div class="alert alert-success">#}
+                        {#{{ message }}#}
+                    {#</div>#}
+                {#{% endfor %}#}
+
+                {# pour afficher tout type de message flash #}
+
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ label }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
             </div>
         </div>
     </div>

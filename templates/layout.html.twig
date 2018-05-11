@@ -17,13 +17,19 @@
                 <a class="nav-link"  href="{{ path('home') }}">Accueil</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link"  href="{{ path('bonjour') }}">Bonjour</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link"  href="{{ path('bonjourNom', {nom: 'toto'}) }}">Bonjour Toto</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link"  href="{{ path('exercice1') }}">Comment allez vous?</a>
+                <a class="nav-link"  href="{{ path('addArticle') }}">Ajouter un article</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  href="{{ path('articles_recents') }}">Articles récents</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  href="{{ path('categorie_add') }}">Ajout de catégories</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  href="{{ path('categorie_last5') }}">Catégories récentes</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link"  href="{{ path('exercice2') }}">Quelle heure est-il?</a>
