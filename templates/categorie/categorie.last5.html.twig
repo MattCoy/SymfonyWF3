@@ -1,0 +1,19 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Articles | all{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                {{ dump(categories) }}
+                {% for categorie in categories %}
+                    <h3>{{ categorie.libelle }}</h3>
+                {% endfor %}
+            </div>
+
+            <div class="col-md-6">
+            </div>
+        </div>
+    </div>
+{% endblock %}
