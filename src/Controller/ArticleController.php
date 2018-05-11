@@ -89,4 +89,29 @@ class ArticleController extends Controller
         return $this->render('article/articles.html.twig', array('articles'=>$articles));
 
     }
+
+    /**
+     * @Route("/articles-recents",
+     *     name="articles_recents"
+     * )
+     */
+    public function showRecents()
+    {
+        //on va appeler la méthode findAllPostedAfter() nouvellement créée dans notre repository
+        $articles = $this->getDoctrine()
+            ->getRepository(Article::class)
+            ->findAllPostedAfter('2000-01-01');
+        //$articles est  un tableau de tableaux et non pas un tableau d'objets articles
+
+        $articles2 = $this->getDoctrine()
+            ->getRepository(Article::class)
+            ->findAllPostedAfter2('2000-01-01');
+        //articles2 est un tableau d'objets articles
+
+        return $this->render('article/articles.recents.html.twig', array(
+                                                                            'articles' => $articles,
+                                                                            'articles2' => $articles2
+        ));
+
+    }
 }

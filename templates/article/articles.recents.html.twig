@@ -1,0 +1,34 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Articles | all{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                {{ dump(articles) }}
+                {% for article in articles %}
+                    <h1>{{ article.title }}</h1>
+                    {#
+                        articles étant un tableau de tableaux, on a pas article.datePubli (propriété d'un objet article)
+                        mais article.date_publi (clé du tableau qui correspond au nom du champ dans la base)
+                    #}
+                    <small> publié par {{ article.author }} le {{ article.date_publi|date('d/m/Y') }}</small>
+                    <p>{{ article.content }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="col-md-6">
+                {{ dump(articles2) }}
+                {% for article in articles2 %}
+                    <h1>{{ article.title }}</h1>
+                    {#
+                        articles étant un tableau d'objets, on a article.datePubli
+                    #}
+                    <small> publié par {{ article.author }} le {{ article.datePubli|date('d/m/Y') }}</small>
+                    <p>{{ article.content }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
