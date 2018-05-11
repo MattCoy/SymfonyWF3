@@ -82,26 +82,50 @@ class CategorieController extends Controller
     }*/
 
 
-    /**
-     * @Route("/categorie/last5", name="categorie_last5")
-     */
-    public function showLast5Categories()
-    {
-
-        $categories = $this->getDoctrine()
-            ->getRepository(Categorie::class)
-            ->findLast5();
-
-        return $this->render('categorie/categorie.last5.html.twig', ['categories' => $categories]);
-    }
 
     /**
      * @Route("/categorie/update/{id}",
      *     name="categorie_update",
      *     requirements={"id":"\d+"}
      * )
+     * $request va contenir les infos de la requête http et notamment $_GET ou $_POST
      */
-    public function updateCategorie(Categorie $categorie)
+    public function updateCategorie(Request $request, Categorie $categorie)
+    {
+        //je crée mon formulaire à partir de mon objet $categorie
+        $form = $this->createForm(CategorieType::class, $categorie);
+
+        //je demande à mon objet Form de prendre en charge les données envoyées (contenues dans la requête HTTP)
+        $form->handleRequest($request);
+
+        //si le formulaire a été envoyé et si les données sont valides
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // ici on charge le formulaire de remplir notre objet catégorie avec ces données
+            $categorie = $form->getData();
+
+            // maintenant, on peut enregistrer la categorie modifiée
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($categorie);
+            $entityManager->flush();
+
+            //on crée un message flash
+            $this->addFlash(
+                'success',
+                'Catégorie modifiée !'
+            );
+
+            //on renvoie sur la liste des catégories par exemple
+            return $this->redirectToRoute('categorie_last5');
+        }
+
+        //je passe en paramètre la "vue" du formulaire
+        return $this->render('categorie/categorie.add.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
+    /*public function updateCategorie(Categorie $categorie)
     {
         /* Ici on utilise une fonctionnalité très utile de symfony : le ParamConverter
         Alors que l'on devrait récupérer en argument $id, l'id de la catégorie,
@@ -114,7 +138,7 @@ class CategorieController extends Controller
         Si aucun article n'est trouvé, une erreur 404 est générée.
         */
 
-        //Ensuite je peut modifier ma catégorie
+        /*//Ensuite je peut modifier ma catégorie
         $categorie->setLibelle('catégorie modifiée');
 
         //récupération du manager
@@ -136,6 +160,20 @@ class CategorieController extends Controller
 
         //on redirige sur la liste des 5 dernières catégories
         return $this->redirectToRoute('categorie_last5');
+    }*/
+
+
+    /**
+     * @Route("/categorie/last5", name="categorie_last5")
+     */
+    public function showLast5Categories()
+    {
+
+        $categories = $this->getDoctrine()
+            ->getRepository(Categorie::class)
+            ->findLast5();
+
+        return $this->render('categorie/categorie.last5.html.twig', ['categories' => $categories]);
     }
 
     /**
