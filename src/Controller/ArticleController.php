@@ -5,6 +5,8 @@ namespace App\Controller;
 // ce use nous permet d'utiliser new Article() dans ce namespace
 use App\Entity\Article;
 
+use App\Form\ArticleType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -16,30 +18,38 @@ class ArticleController extends Controller
      * @Route("/article/add", name="addArticle")
      *
      */
-    public function addArticle()
+    public function addArticle(Request $request)
     {
-
-        //$entityManager est l'objet qui va nous permettre d'enregistrer des infos dans la base
-        $entityManager = $this->getDoctrine()->getManager();
-
-        //pour l'instant, on crée notre objet article en dur, on verra plus tard les formulaires
-        //nous avons besoin d'instancier notre class Article, donc ne pas oublier le use pour pouvoir faire
         $article = new Article();
-        $article->setTitle('Mon premier Article');
-        $article->setContent('Rien d\'intéressant');
-        $article->setAuthor('Moi');
-        //nous avons déclaré notre propriété en datetime, on doit y stocker un objet de classe DateTime
-        $date_publi = new \DateTime(date('Y-m-d H:i:s'));
-        $article->setDatePubli($date_publi);
 
-        //ici on dit à doctrine de conserver en mémoire cet objet
-        //il n'est pas pour l'instant enregistré dans la table
-        $entityManager->persist($article);
+        $form = $this->createForm(ArticleType::class, $article);
 
-        //on dit à doctrine d'exécuter toutes les requêtes (ici une seule)
-        $entityManager->flush();
+        $form->handleRequest($request);
 
-        return $this->render('article/add.html.twig');
+        //si le formulaire a été envoyé et si les données sont valides
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // ici on charge le formulaire de remplir notre objet article avec ces données
+            $article = $form->getData();
+
+            // maintenant, on peut enregistrer ce nouvel article
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($article);
+            $entityManager->flush();
+
+            //on crée un message flash
+            $this->addFlash(
+                'success',
+                'Article ajouté !'
+            );
+
+            //on renvoie sur la liste des catégories par exemple
+            return $this->redirectToRoute('articles_showAll');
+        }
+
+        return $this->render('article/add.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     /**
@@ -122,30 +132,39 @@ class ArticleController extends Controller
      *     requirements={"id":"\d+"}
      * )
      */
-    public function updateArticle(Article $article)
+    public function updateArticle(Article $article, Request $request)
     {
         // le ParamConverter convertit automatiquement l'id en objet Article
 
-        //Ensuite je peut modifier mon article
-        $article->setTitle('titre modifié');
+        $form = $this->createForm(ArticleType::class, $article);
 
-        //récupération du manager
-        $entityManager = $this->getDoctrine()->getManager();
+        $form->handleRequest($request);
 
-        //ici pas besoin de faire $entityManager->persist($article);
-        //car doctrine a déjà en mémoire cette entité, puisqu'il l'a récupéré dans la base
+        //si le formulaire a été envoyé et si les données sont valides
+        if ($form->isSubmitted() && $form->isValid()) {
 
-        $entityManager->flush();
-        //à ce moment, doctrine sait que $article existe déjà dans la base et va donc faire un update au lieu d'un insert !
+            // ici on charge le formulaire de remplir notre objet article avec ces données
+            $article = $form->getData();
 
-        //message flash
-        $this->addFlash(
-            'success',
-            'Article modifié !'
-        );
+            // maintenant, on peut enregistrer ce nouvel article
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($article);
+            $entityManager->flush();
 
-        //on redirige sur la liste des 5 derniers articles
-        return $this->redirectToRoute('articles_showAll');
+            //on crée un message flash
+            $this->addFlash(
+                'success',
+                'Article modifié !'
+            );
+
+            //on renvoie sur la liste des catégories par exemple
+            return $this->redirectToRoute('articles_showAll');
+        }
+
+        return $this->render('article/add.html.twig', array(
+            'form' => $form->createView(),
+        ));
+
     }
 
     /**

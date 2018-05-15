@@ -1,0 +1,6 @@
+Créer la classe de formulaire pour créer un article.
+
+Mettre à jour les controleurs d'ajout d'article et de modification d'article.
+
+Contraintes : title (pas vide, 50 caractères au max), content (pas vide, au moins 10 caractères), date_publi(datetime)
+
