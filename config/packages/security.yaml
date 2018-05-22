@@ -20,16 +20,12 @@ security:
                 path:   /logout
                 target: /
 
-            # activate different ways to authenticate
-
-            # http_basic: true
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: true
-            # https://symfony.com/doc/current/security/form_login_setup.html
-
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+    # Pour contrôler l'accès  pour une partie du site (par ex zone admin)
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        #tout les url commençant par /admin ne seront accessibles que par un user ayant ROLE_ADMIN
+        - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+    # on définit une hierarchie entre les roles
+    role_hierarchy:
+            ROLE_AUTEUR:       ROLE_USER  #un user qui a le ROLE_AUTEUR aura aussi le ROLE_USER
+            ROLE_ADMIN: [ROLE_AUTEUR, ROLE_MODERATEUR] #un user qui a le ROLE_ADMIN aura aussi le ROLE_AUTEUR et donc le ROLE_USER

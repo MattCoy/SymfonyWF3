@@ -108,4 +108,23 @@ class HomeController extends Controller
             )
         );
     }
+
+    /**
+     * page qui va afficher les infos de l'utilisateur connecté
+     * @Route("/user-info/",
+     *      name="userInfo"
+     * )
+     */
+    public function showUser(){
+
+        //pour vérifier qu'un utilisateur est bien connecté (= pas anonyme)
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        //récupérer l'objet user
+        $moi = $this->getUser();
+
+        return $this->render('user.info.html.twig',
+                                array('moi' => $moi)
+        );
+    }
 }

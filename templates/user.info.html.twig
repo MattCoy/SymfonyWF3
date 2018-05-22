@@ -1,0 +1,16 @@
+{# templates/user.info.html.twig #}
+{%  extends('layout.html.twig') %}
+{% block title %}Moi{% endblock %}
+
+{%  block content %}
+    <h1>Infos sur moi</h1>
+    Bonjour {{ moi.username }}, ton email est {{ moi.email }} !
+
+    {# dans une vue, pour vérifier si un utilisateur est connecté #}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        vous êtes connecté
+    {% endif %}
+
+    {# on peut directement accéder à l'utilisateur (sans le passer en paramètre de la vue dans le controleur #}
+    Bonjour {{ app.user.username }}, ton email est {{ app.user.email }} !
+{% endblock %}

@@ -43,9 +43,9 @@ class User implements UserInterface, \Serializable
     private $isActive;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="roles", type="array")
      */
-    private $role;
+    private $roles;
 
     public function __construct()
     {
@@ -125,22 +125,15 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getRole(): ?string
+    public function getRoles(): array
     {
-        return $this->role;
+        return $this->roles;
     }
 
-    public function setRole(string $role): self
+    public function setRoles(array $roles): self
     {
-        $this->role = $role;
-
+        $this->roles = $roles;
         return $this;
-    }
-
-    public function getRoles()
-    {
-        //pour l'instant on met les roles en dur
-        return array('ROLE_USER');
     }
 
     public function eraseCredentials()
