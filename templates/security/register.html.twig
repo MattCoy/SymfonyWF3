@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-4 offset-4">
+            {# affichage des messages d'erreurs le cas échéant#}
+
+            {# le formulaire #}
+            {{ form_start(form) }}
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+{% endblock %}

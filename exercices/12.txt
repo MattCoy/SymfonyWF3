@@ -1,0 +1,7 @@
+Créer les éléments de menu suivants : login si l'utilisateur n'est pas connecté et logout si il l'est.
+
+Sur la page admin, intégrer le layout de base du site.
+
+Créer le formulaire (et la page qui va l'afficher) qui va permettre à un utlisateur de s'inscrire.
+
+Ajouter l'élement de menu "register" si l'utilisateur n'est pas connecté

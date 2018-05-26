@@ -28,7 +28,7 @@ class User implements UserInterface, \Serializable
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=191, nullable=true)
+     * @param mixed
      */
     private $plainPassword;
 

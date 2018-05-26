@@ -32,10 +32,23 @@
                 <a class="nav-link"  href="{{ path('categorie_last5') }}">Catégories récentes</a>
             </li>
             {# cet élément de menu n'apparaitra que si l'utilisateur est connecté et a le ROLE_ADMIN #}
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('logout') }}">logout</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('login') }}">login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('register') }}">register</a>
+                </li>
+            {% endif %}
+            {# cet élément de menu n'apparaitra que si l'utilisateur est connecté et a le ROLE_ADMIN #}
             {% if is_granted('ROLE_ADMIN') %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('adminHome') }}">Zone admin</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('adminHome') }}">Zone admin</a>
+                </li>
             {% endif %}
         </ul>
     </nav>
