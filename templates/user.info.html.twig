@@ -13,4 +13,12 @@
 
     {# on peut directement accéder à l'utilisateur (sans le passer en paramètre de la vue dans le controleur #}
     Bonjour {{ app.user.username }}, ton email est {{ app.user.email }} !
+
+
+    {% for article in app.user.articles %}
+     {{ article.title }}
+    {% endfor %}
+
+
+    {{ dump(app.user.articles) }}
 {% endblock %}

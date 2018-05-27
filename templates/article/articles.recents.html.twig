@@ -10,10 +10,10 @@
                 {% for article in articles %}
                     <h1>{{ article.title }}</h1>
                     {#
-                        articles étant un tableau de tableaux, on a pas article.datePubli (propriété d'un objet article)
-                        mais article.date_publi (clé du tableau qui correspond au nom du champ dans la base)
+                        articles étant un tableau de tableaux, on a accède aux infos de l'utilisateur depuis article :
+                        article.username, article.email
                     #}
-                    <small> publié par {{ article.author }} le {{ article.date_publi|date('d/m/Y') }}</small>
+                    <small> publié par {{ article.username }} le {{ article.date_publi|date('d/m/Y') }}</small>
                     <p>{{ article.content }}</p>
                 {% endfor %}
             </div>
@@ -23,9 +23,10 @@
                 {% for article in articles2 %}
                     <h1>{{ article.title }}</h1>
                     {#
-                        articles étant un tableau d'objets, on a article.datePubli
+                        articles étant un tableau d'objets, on a article.user
+                        user étant lui aussi un objet, on fait article.user.username ou article.user.email
                     #}
-                    <small> publié par {{ article.author }} le {{ article.datePubli|date('d/m/Y') }}</small>
+                    <small> publié par {{ article.user.username }} le {{ article.datePubli|date('d/m/Y') }}</small>
                     <p>{{ article.content }}</p>
                 {% endfor %}
             </div>

@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 //le use pour la classe Response que l'on utilise dans la méthode
+use App\Entity\Article;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 //pour pouvoir utiliser les annotations
@@ -122,6 +123,26 @@ class HomeController extends Controller
 
         //récupérer l'objet user
         $moi = $this->getUser();
+
+        //ajouter un article depuis un objet User
+        $article = new Article();
+        $article->setTitle('test');
+        $article->setContent('test contenu');
+        $article->setDatePubli(new \DateTime(date('Y-m-d H:i:s')));
+
+        //on ajoute l'article tout en le lien à l'utilisateur (ici $moi)
+        $moi->addArticle($article);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        //on persiste l'article puisque c'est un nouvel article
+        $entityManager->persist($article);
+        $entityManager->flush();
+
+
+        //supprimer un article depuis l'objet User
+        $moi->removeArticle($article);
+
+        $entityManager->flush();
 
         return $this->render('user.info.html.twig',
                                 array('moi' => $moi)

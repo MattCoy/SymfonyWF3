@@ -39,6 +39,32 @@ class TestData extends Fixture
 
         }
 
+        //on ajoute 5 utilisateurs AVANT d'ajouter les articles
+        for($i=1; $i<=5; $i++){
+            $user = new User();
+            $user->setUsername('toto' . $i);
+            $user->setEmail('toto' . $i . '@toto.to');
+            //on va mettre toto1 en admin
+            if($user->getUsername() === 'toto1'){
+                $user->setRoles(array('ROLE_USER', 'ROLE_ADMIN'));
+            }
+            else{
+                //les autres sont de simples user
+                $user->setRoles(array('ROLE_USER'));
+            }
+            //on définit un mot de passe
+            $plainPassword = 'toto' . $i;
+            //on l'encode
+            $encoded = $this->encoder->encodePassword($user, $plainPassword);
+            //on maj le user
+            $user->setPassword($encoded);
+
+            //on crée un tableau qui contient les utilisateurs
+            $auteurs[] = $user;
+
+            $manager->persist($user);
+        }
+
         //on crée 30 articles
 
         for($i=1; $i <= 30; $i++){
@@ -60,37 +86,13 @@ class TestData extends Fixture
             //create DateTime Object
             $article->setDatePubli(new \DateTime($randomDate));
 
-            //on crée un tableau d'auteurs et on en choisit un au hasard
-            $auteurs = ['Verlaine', 'Hugo', 'Voltaire', 'Zola', 'Dumas', 'Duras', 'Molière', 'Ribéry' ];
-
-            $article->setAuthor($auteurs[array_rand($auteurs)]);
+            $article->setUser($auteurs[array_rand($auteurs)]);
 
             $manager->persist($article);
 
         }
 
-        //on ajoute 5 utilisateurs
-        for($i=1; $i<=5; $i++){
-            $user = new User();
-            $user->setUsername('toto' . $i);
-            $user->setEmail('toto' . $i . '@toto.to');
-            //on va mettre toto1 en admin
-            if($user->getUsername() === 'toto1'){
-                $user->setRoles(array('ROLE_USER', 'ROLE_ADMIN'));
-            }
-            else{
-                //les autres sont de simples user
-                $user->setRoles(array('ROLE_USER'));
-            }
-            //on définit un mot de passe
-            $plainPassword = 'toto' . $i;
-            //on l'encode
-            $encoded = $this->encoder->encodePassword($user, $plainPassword);
-            //on maj le user
-            $user->setPassword($encoded);
 
-            $manager->persist($user);
-        }
 
         //ne pas oublier de faire flush
         $manager->flush();

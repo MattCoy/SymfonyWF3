@@ -20,6 +20,9 @@ class ArticleController extends Controller
      */
     public function addArticle(Request $request)
     {
+        //seul un utilisateur connecté peut poster un article
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $article = new Article();
 
         $form = $this->createForm(ArticleType::class, $article);
@@ -32,7 +35,10 @@ class ArticleController extends Controller
             // ici on charge le formulaire de remplir notre objet article avec ces données
             $article = $form->getData();
 
-            // maintenant, on peut enregistrer ce nouvel article
+            //l'utilisateur connecté est l'auteur
+            $article->setUser($this->getUser());
+
+            // maintenant, on peut supprimer l'article
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
@@ -89,7 +95,7 @@ class ArticleController extends Controller
     {
         $articles = $this->getDoctrine()
             ->getRepository(Article::class)
-            ->findAll();
+            ->myFindAll();
 
         if (!$articles) {
             throw $this->createNotFoundException(

@@ -43,9 +43,14 @@ class Article
     private $date_publi;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * on indique à doctrine que cette propriété fait référence à
+     * l'entité User et qu'il s'agit d'une relation ManyToOne
+     *
+     * on rajoute inversedBy
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="articles")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $author;
+    private $user;
 
     public function getId()
     {
@@ -88,14 +93,14 @@ class Article
         return $this;
     }
 
-    public function getAuthor(): ?string
+    public function getUser(): ?User
     {
-        return $this->author;
+        return $this->user;
     }
 
-    public function setAuthor(?string $author): self
+    public function setUser(User $user): self
     {
-        $this->author = $author;
+        $this->user = $user;
 
         return $this;
     }

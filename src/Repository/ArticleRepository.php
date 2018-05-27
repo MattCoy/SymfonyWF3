@@ -20,9 +20,26 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /*
+     * on écrit myFindAll() en faisant la jointure de façon à récupérer les infos de l'auteur
+     * de l'article en une seule requête
+     */
+    public function myFindAll(){
+        $querybuilder = $this->createQueryBuilder('a')
+            //on fait la jointure
+            // a.user fait référence à la propriété user de l'entité article
+            ->innerJoin('a.user', 'u')
+            // on récupère les données de l'utilisateur associé pour éviter des requêtes supp
+            ->addSelect('u')
+            //on trie par date de publication ... pourquoi pas
+            ->orderBy('a.date_publi', 'DESC')
+            ->getQuery();
+
+        return $querybuilder->execute();
+    }
+
+    /*
      * Méthode qui va récupérer les articles dont la date de publication est plus récente
      * que la date donnée en paramètre
-     * On peut faire cette requête en SQL "à l'ancienne"
      * @param $date_post string, la date au format datetime
      * @return array of arrays of article data
      */
@@ -31,7 +48,7 @@ class ArticleRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-        SELECT * FROM article a
+        SELECT a.id as idArticle, title, content, date_publi, u.* FROM article a INNER JOIN user u ON a.user_id = u.id 
         WHERE a.date_publi > :date_post
         ORDER BY a.date_publi ASC
         ';
@@ -53,6 +70,10 @@ class ArticleRepository extends ServiceEntityRepository
         //avec cette méthode, l'objet $querybuilder crée sait automatiquement qu'il doit chercher
         //dans la table article, la première ligne permet de définir un alias, par convention a (la première lettre de la table)
         $querybuilder = $this->createQueryBuilder('a')
+            // a.user fait référence à la propriété user de l'entité article
+            ->innerJoin('a.user', 'u')
+            // on récupère les données de l'utilisateur associé pour éviter des requêtes supp
+            ->addSelect('u')
             ->andWhere('a.date_publi > :date_post')
             ->setParameter('date_post', $date_post)
             ->orderBy('a.date_publi', 'ASC')

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -47,9 +49,26 @@ class User implements UserInterface, \Serializable
      */
     private $roles;
 
+    /**
+     * //on indique a doctrine la relation OneToMany
+     * //orphanRemoval=true permet de dire a doctrine de supprimer définitivement l'article s'il n'a plus d'auteur
+     * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="user", orphanRemoval=true)
+     */
+    private $articles;
+
     public function __construct()
     {
         $this->isActive = true; //par défault un user est actif
+
+        $this->articles = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
     }
 
     public function getSalt()
@@ -166,4 +185,46 @@ class User implements UserInterface, \Serializable
             ) = unserialize($serialized, ['allowed_classes' => false]);
     }
 
+    /*
+     * Permet d'ajouter un article en le liant à l'utilisateur
+     */
+    public function addArticle(Article $article): self
+    {
+        if (!$this->articles->contains($article)) {
+
+            //on rajoute l'article s'il n'est pas déjà présent
+            $this->articles[] = $article;
+
+            //Important : on met à jour l'objet Article en lui donnant un auteur
+            $article->setUser($this);
+
+        }
+
+        return $this;
+    }
+
+    /*
+     * Permet de supprimer un article depuis l'objet User
+     * Comme on ne souhaite pas conserver un article sans auteur, on a spécifié
+     * dans les annotations de la propriété article orphanRemoval=true pour que doctrine supprimme l'article
+     * Si l'on  souhaite simplement conserver l'article sans auteur, il faut modifier l'entité article (propriété user)
+     * ainsi que cette méthode
+     */
+    public function removeArticle(Article $article): self
+    {
+        if ($this->articles->contains($article)) {
+
+            //si l'article est bien lié à cet utilisateur
+            //on l'enlève de la liste des articles de cet utilisateur
+            $this->articles->removeElement($article);
+
+            //a décommenter si l'on souhaite pouvoir conserver l'article sans auteur
+            /*if ($article->getUser() === $this) {
+                $article->setUser(null);
+            }*/
+
+        }
+
+        return $this;
+    }
 }
