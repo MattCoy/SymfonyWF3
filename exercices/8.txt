@@ -1,7 +1,7 @@
-Créer une entité catégorie (propriété : libelle (string 100))
+CrÃ©er une entitÃ© catÃ©gorie (propriÃ©tÃ© : libelle (string 100))
 
-Dans un nouveau controleur, créer une page qui va permettre d'ajouter des catégories (l'ajout se fait "en dur" dans le controleur).
+Dans un nouveau controleur, crï¿½er une page qui va permettre d'ajouter des catÃ©gories (l'ajout se fait "en dur" dans le controleur).
 
-Créer dans CategorieRepository une méthode qui va nous permettre de récupérer les 5 dernières catégories 
-et afficher ces catégories sur une nouvelle page
+CrÃ©er dans CategorieRepository une mÃ©thode qui va nous permettre de rÃ©cupÃ©rer les 5 derniÃ¨res catÃ©gories
+et afficher ces catÃ©gories sur une nouvelle page
 

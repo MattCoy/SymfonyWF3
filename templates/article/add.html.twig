@@ -5,19 +5,20 @@
 {% block content %}
     <div class="container-fluid">
         <h1>Ajout d'article</h1>
+        {{ dump(form) }}
         {{ form_start(form) }}  {# permet de créer la balise <form> #}
 
-        <div class="form-group">
-            {# on peut générer le formulaire champ par champ pour pouvoir les customiser individuellement #}
-            {{ form_label(form.title) }}  {# va générer le label du champ title #}
-            {{ form_errors(form.title) }}   {# va générer la div qui contiendra les éventuelles erreurs #}
-            {{ form_widget(form.title, {'attr': {'class' : 'form-control-lg', 'placeholder' : 'entrez un titre svp' }}) }}   {# va générer le champ title #}
+       {# <div class="form-group">
+            #}{# on peut générer le formulaire champ par champ pour pouvoir les customiser individuellement #}{#
+            {{ form_label(form.article.title) }}  #}{# va générer le label du champ title #}{#
+            {{ form_errors(form.article.title) }}   #}{# va générer la div qui contiendra les éventuelles erreurs #}{#
+            {{ form_widget(form.article.title, {'attr': {'class' : 'form-control-lg', 'placeholder' : 'entrez un titre svp' }}) }}   #}{# va générer le champ title #}{#
         </div>
-        {# On peut tout à fait rajouter du html, css... #}
+        #}{# On peut tout à fait rajouter du html, css... #}{#
         <div class="autre-classe">
-        {{ form_row(form.content, {'label' : 'Contenu de cet article !!', 'attr' : {'class' : 'form-control-lg', 'placeholder' : 'soyez inventif svp' }}) }}
-        {# va générer le label , les erreurs et le champ Content en une instruction #}
-        </div>
+        {{ form_row(form.article.content, {'label' : 'Contenu de cet article !!', 'attr' : {'class' : 'form-control-lg', 'placeholder' : 'soyez inventif svp' }}) }}
+        #}{# va générer le label , les erreurs et le champ Content en une instruction #}{#
+        </div>#}
 
         {{ form_end(form) }}   {# permet de fermer la balise <form> et d'ajouter tout les champs qui n'ont pas été générés avant #}
     </div>

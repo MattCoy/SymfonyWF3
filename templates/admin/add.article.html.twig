@@ -1,0 +1,22 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Ajout d'article{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <h1>Ajout d'article</h1>
+        {{ dump(form) }}
+        {{ form_start(form) }}
+            {{ form_row(form.article.title, {'label' : 'Titre de cet article !!', 'attr' : {'class' : 'form-control-lg', 'placeholder' : 'soyez créatif svp' }}) }}
+
+            {{ form_row(form.article.content, {'label' : 'Contenu de cet article !!', 'attr' : {'class' : 'form-control-lg', 'placeholder' : 'soyez inventif svp' }}) }}
+
+            {{ form_row(form.user, {'label' : 'Auteur', 'attr' : {'class' : 'form-control-lg' }}) }}
+
+            {{ form_row(form.date_publi, {'label' : 'Date de publication', 'attr' : {'class' : 'form-control-lg' }}) }}
+
+            <button type="submit" class="btn btn-primary">Poster</button>
+        {{ form_end(form) }}
+
+    </div>
+{% endblock %}

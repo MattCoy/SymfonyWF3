@@ -1,4 +1,4 @@
-Créer un menu, sur toutes les pages suivantes qui permette de naviguer entre elles
+CrÃ©er un menu, sur toutes les pages suivantes qui permette de naviguer entre elles
 pages accessibles : 
  /
  /bonjour/

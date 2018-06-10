@@ -1,0 +1,6 @@
+Créer une page dans la zone admin qui permet à l'admin de créer un article et de choisir son auteur parmi les utilisateurs
+et la date de publication.
+
+Créer la page qui va permettre de modifier l'article.
+
+Modifier les vues d'ajout et modification d'article par un simple utilisateur

@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArticleType extends AbstractType
 {
@@ -23,9 +24,13 @@ class ArticleType extends AbstractType
         $builder
             ->add('title', TextType::class, array('label'=>'Titre de l\'article'))
             ->add('content', TextareaType::class, array('label'=>'Contenu de l\'article'))
-            ->add('date_publi', DateTimeType::class, array('label'=>'Date de publication'))
-            ->add('save', SubmitType::class, array('label' => 'enregistrer',
-                                                                'attr' => ['class' => 'btn btn-primary']))
         ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'inherit_data' => true,
+        ]);
     }
 }

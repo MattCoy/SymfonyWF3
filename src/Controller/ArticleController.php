@@ -5,7 +5,7 @@ namespace App\Controller;
 // ce use nous permet d'utiliser new Article() dans ce namespace
 use App\Entity\Article;
 
-use App\Form\ArticleType;
+use App\Form\ArticleUserType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,7 +25,7 @@ class ArticleController extends Controller
 
         $article = new Article();
 
-        $form = $this->createForm(ArticleType::class, $article);
+        $form = $this->createForm(ArticleUserType::class, $article);
 
         $form->handleRequest($request);
 
@@ -37,6 +37,9 @@ class ArticleController extends Controller
 
             //l'utilisateur connecté est l'auteur
             $article->setUser($this->getUser());
+
+            //la date de publication
+            $article->setDatePubli(new \DateTime(date('Y-m-d H:i:s')));
 
             // maintenant, on peut supprimer l'article
             $entityManager = $this->getDoctrine()->getManager();
@@ -142,7 +145,7 @@ class ArticleController extends Controller
     {
         // le ParamConverter convertit automatiquement l'id en objet Article
 
-        $form = $this->createForm(ArticleType::class, $article);
+        $form = $this->createForm(ArticleUserType::class, $article);
 
         $form->handleRequest($request);
 

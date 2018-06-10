@@ -1,3 +1,3 @@
-Créer une page  pour l'url /exercice2/heure
+CrÃ©er une page  pour l'url /exercice2/heure
 Dans le controleur, stocker la date et l'heure dans une variable
-Passer cette variable à une vue twig (par ex exercice.html.twig), pour qu'elle affiche la date en gras
+Passer cette variable Ã  une vue twig (par ex exercice.html.twig), pour qu'elle affiche la date en gras
