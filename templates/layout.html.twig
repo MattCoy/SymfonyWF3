@@ -6,6 +6,7 @@
     <title>{% block title %}{%  endblock %}</title>
     {% block css %}
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     {% endblock %}
 </head>
 <body>
@@ -24,6 +25,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link"  href="{{ path('articles_recents') }}">Articles récents</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  href="{{ path('usersList') }}">Utilisateurs</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link"  href="{{ path('categorie_add') }}">Ajout de catégories</a>

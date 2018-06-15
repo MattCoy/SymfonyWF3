@@ -1,0 +1,27 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block content %}
+
+<div class="example-wrapper">
+    <h1>Liste des utilisateurs</h1>
+
+    <div class="col-md-6">
+        <ul class="list-group">
+            {% for user in users %}
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a href="{{ path('userPage', {id: user.id}) }}">{{ user.username }}</a>
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="{{ path('userPage', {id: user.id}) }}"><i class="fas fa-search"></i></a>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

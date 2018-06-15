@@ -1,6 +1,3 @@
-Créer une page dans la zone admin qui permet à l'admin de créer un article et de choisir son auteur parmi les utilisateurs
-et la date de publication.
-
-Créer la page qui va permettre de modifier l'article.
-
-Modifier les vues d'ajout et modification d'article par un simple utilisateur
+Créer un nouveau controleur (UserController) et une page qui liste les utilisateurs
+Au clic sur un utilisateur, on accède à la page qui nous donne les infos de l'utilisateur et la liste des articles qu'il a écrit
+Chaque titre d'article est un lien vers la page qui affiche l'article et sur cette page rendre le nom de l'auteur cliquable (lien vers la fiche de l'auteur)
