@@ -15,7 +15,7 @@
 
     {# affichage des articles #}
     {% for article in articles %}
-        <h1>{{ article.title }}</h1>
+        <h1><a href="{{ path('article_show', {id:article.id}) }}">{{ article.title }}</a></h1>
         <small> publié par {{ article.user.username }} le {{ article.datepubli|date('d/m/Y') }}</small>
         <p>{{ article.content }}</p>
     {% endfor %}

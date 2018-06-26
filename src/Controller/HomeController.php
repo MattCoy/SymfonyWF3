@@ -11,6 +11,7 @@ namespace App\Controller;
 //le use pour la classe Response que l'on utilise dans la méthode
 use App\Entity\Article;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 //pour pouvoir utiliser les annotations
 use Symfony\Component\Routing\Annotation\Route;
@@ -148,4 +149,38 @@ class HomeController extends Controller
                                 array('moi' => $moi)
         );
     }
+
+    /**
+     * page de test : utilisation de l'objet request
+     * @Route("/test-request/",
+     *      name="testRequest"
+     * )
+     */
+    public function testRequest(Request $request){
+
+        //pour accéder à $_GET
+        $get = $request->query->all();
+        //si on attend un paramètre, par exemple ?message=bonjour toto
+        //le premier paramètre de la méthode get() correspond au nom du paramètre d'url et le second correspond à sa valeur s'il n'existe pas
+        $message = $request->query->get('message', 'pas de message');
+
+        //on peut utiliser la fonction dump() (var_dump() amélioré) pour débugger des variables
+        dump($get);
+
+        //permet de simuler une requête (ici en post)
+        $request = Request::create(
+            '/test-request/',
+            'POST',
+            array('pseudo' => 'pompom')
+        );
+
+        $post = $request->request->all();
+        $pseudo = $request->request->get('pseudo');
+        dump($post);
+
+        return $this->render('test.request.html.twig',
+            array('message' => $message, 'pseudo' => $pseudo)
+        );
+    }
+
 }

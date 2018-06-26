@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Article;
 
 use App\Form\ArticleUserType;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -34,6 +35,22 @@ class ArticleController extends Controller
 
             // ici on charge le formulaire de remplir notre objet article avec ces données
             $article = $form->getData();
+
+            // $files va contenir l'image envoyée
+            $file = $article->getImage();
+
+            //on génère un nouveau nom
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+            //on transfère le fichier sur le serveur
+            $file->move(
+                $this->getParameter('articles_image_directory'),
+                $fileName
+            );
+
+            // on met à jour la propriété image, qui doit contenir le nom
+            // et pas l'image elle même
+            $article->setImage($fileName);
 
             //l'utilisateur connecté est l'auteur
             $article->setUser($this->getUser());
@@ -145,6 +162,16 @@ class ArticleController extends Controller
     {
         // le ParamConverter convertit automatiquement l'id en objet Article
 
+        //on stocke le nom du fichier image au cas où aucun fiochier n'ai été envoyé
+        $fileName = $article->getImage();
+
+        //on doit remplaçer le nom du fichier image par une instance de File représentant le fichier
+        if($article->getImage()) {
+            $article->setImage(
+                new File($this->getParameter('articles_image_directory') . '/' . $article->getImage())
+            );
+        }
+
         $form = $this->createForm(ArticleUserType::class, $article);
 
         $form->handleRequest($request);
@@ -154,6 +181,26 @@ class ArticleController extends Controller
 
             // ici on charge le formulaire de remplir notre objet article avec ces données
             $article = $form->getData();
+
+            if($article->getImage()) { //on ne fait le traitement de l'upload que si une image a été envoyée
+
+                // $files va contenir l'image envoyée
+                $file = $article->getImage();
+
+                //on génère un nouveau nom
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+
+                //on transfère le fichier sur le serveur
+                $file->move(
+                    $this->getParameter('articles_image_directory'),
+                    $fileName
+                );
+
+            }
+
+            // on met à jour la propriété image, qui doit contenir le nom
+            // et pas l'image elle même
+            $article->setImage($fileName);
 
             // maintenant, on peut enregistrer ce nouvel article
             $entityManager = $this->getDoctrine()->getManager();
@@ -170,8 +217,9 @@ class ArticleController extends Controller
             return $this->redirectToRoute('articles_showAll');
         }
 
-        return $this->render('article/add.html.twig', array(
+        return $this->render('article/update.html.twig', array(
             'form' => $form->createView(),
+            'image' => $fileName
         ));
 
     }

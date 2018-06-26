@@ -15,6 +15,8 @@
 
             {{ form_row(form.date_publi, {'label' : 'Date de publication', 'attr' : {'class' : 'form-control-lg' }}) }}
 
+            {{ form_row(form.article.image, {'label' : 'image', 'attr' : {'class' : 'form-control-lg' }}) }}
+
             <button type="submit" class="btn btn-primary">Poster</button>
         {{ form_end(form) }}
 

@@ -52,6 +52,14 @@ class Article
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @Assert\Image
+     */
+    private $image;
+
+
     public function getId()
     {
         return $this->id;
@@ -101,6 +109,18 @@ class Article
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage($image)
+    {
+        $this->image = $image;
 
         return $this;
     }

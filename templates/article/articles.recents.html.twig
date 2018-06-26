@@ -21,7 +21,7 @@
             <div class="col-md-6">
                 {{ dump(articles2) }}
                 {% for article in articles2 %}
-                    <h1>{{ article.title }}</h1>
+                    <h1><a href="{{ path('article_show', {id: article.id}) }}">{{ article.title }}</a></h1>
                     {#
                         articles étant un tableau d'objets, on a article.user
                         user étant lui aussi un objet, on fait article.user.username ou article.user.email
