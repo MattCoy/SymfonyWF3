@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Article;
 
 use App\Form\ArticleUserType;
+use App\Service\FileUploader;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,23 +14,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class ArticleController extends Controller
 {
-
     /**
      *
      * @Route("/article/add", name="addArticle")
      *
      */
-    public function addArticle(Request $request)
+    public function addArticle(Request $request, FileUploader $fileUploader)
     {
         //seul un utilisateur connecté peut poster un article
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         $article = new Article();
-
         $form = $this->createForm(ArticleUserType::class, $article);
-
         $form->handleRequest($request);
-
         //si le formulaire a été envoyé et si les données sont valides
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -39,14 +35,15 @@ class ArticleController extends Controller
             // $files va contenir l'image envoyée
             $file = $article->getImage();
 
-            //on génère un nouveau nom
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            //comme on permet à nos utilisateurs de ne pas envoyer d'image
+            //on initialise $fileName
+            $fileName = '';
 
-            //on transfère le fichier sur le serveur
-            $file->move(
-                $this->getParameter('articles_image_directory'),
-                $fileName
-            );
+            //si on a bien un fichier, on utilise notre service d'upload
+            // upload l'image et renvoie le nom aléatoire
+            if($file){
+                $fileName = $fileUploader->upload($file);
+            }
 
             // on met à jour la propriété image, qui doit contenir le nom
             // et pas l'image elle même
@@ -54,25 +51,20 @@ class ArticleController extends Controller
 
             //l'utilisateur connecté est l'auteur
             $article->setUser($this->getUser());
-
             //la date de publication
             $article->setDatePubli(new \DateTime(date('Y-m-d H:i:s')));
-
             // maintenant, on peut supprimer l'article
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
-
             //on crée un message flash
             $this->addFlash(
                 'success',
                 'Article ajouté !'
             );
-
             //on renvoie sur la liste des catégories par exemple
             return $this->redirectToRoute('articles_showAll');
         }
-
         return $this->render('article/add.html.twig', array(
             'form' => $form->createView(),
         ));
@@ -158,11 +150,11 @@ class ArticleController extends Controller
      *     requirements={"id":"\d+"}
      * )
      */
-    public function updateArticle(Article $article, Request $request)
+    public function updateArticle(Article $article, Request $request, FileUploader $fileUploader)
     {
         // le ParamConverter convertit automatiquement l'id en objet Article
 
-        //on stocke le nom du fichier image au cas où aucun fiochier n'ai été envoyé
+        //on stocke le nom du fichier image au cas où aucun fichier n'ai été envoyé
         $fileName = $article->getImage();
 
         //on doit remplaçer le nom du fichier image par une instance de File représentant le fichier
@@ -187,14 +179,8 @@ class ArticleController extends Controller
                 // $files va contenir l'image envoyée
                 $file = $article->getImage();
 
-                //on génère un nouveau nom
-                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-
-                //on transfère le fichier sur le serveur
-                $file->move(
-                    $this->getParameter('articles_image_directory'),
-                    $fileName
-                );
+                //on utilise notre service qui upload l'image, supprime l'ancienne image et renvoie le nom aléatoire
+                $fileName = $fileUploader->upload($file, $fileName);
 
             }
 

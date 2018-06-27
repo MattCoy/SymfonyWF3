@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Form\ArticleAdminType;
+use App\Service\FileUploader;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,7 +30,7 @@ class AdminController extends Controller
     /**
  * @Route("/admin/article/add", name="adminAddArticle")
  */
-    public function addArticle(Request $request)
+    public function addArticle(Request $request, FileUploader $fileUploader)
     {
         $article = new Article();
 
@@ -39,6 +40,24 @@ class AdminController extends Controller
 
         if($form->isSubmitted() && $form->isValid()){
             $article = $form->getData();
+
+            // $files va contenir l'image envoyée
+            $file = $article->getImage();
+
+            //comme on permet à nos utilisateurs de ne pas envoyer d'image
+            //on initialise $fileName
+            $fileName = '';
+
+            //si on a bien un fichier, on utilise notre service d'upload
+            // upload l'image et renvoie le nom aléatoire
+            if($file){
+                $fileName = $fileUploader->upload($file);
+            }
+
+            // on met à jour la propriété image, qui doit contenir le nom
+            // et pas l'image elle même
+            $article->setImage($fileName);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
@@ -64,7 +83,7 @@ class AdminController extends Controller
      *      requirements={"id":"\d+"}
      *     )
      */
-    public function updateArticle(Request $request, Article $article){
+    public function updateArticle(Request $request, Article $article, FileUploader $fileUploader){
 
         //on stocke le nom du fichier image au cas où aucun fiochier n'ai été envoyé
         $fileName = $article->getImage();
@@ -90,14 +109,8 @@ class AdminController extends Controller
                 // $files va contenir l'image envoyée
                 $file = $article->getImage();
 
-                //on génère un nouveau nom
-                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-
-                //on transfère le fichier sur le serveur
-                $file->move(
-                    $this->getParameter('articles_image_directory'),
-                    $fileName
-                );
+                //on utilise notre service qui upload l'image, supprime l'ancienne image et renvoie le nom aléatoire
+                $fileName = $fileUploader->upload($file, $fileName);
 
             }
 
