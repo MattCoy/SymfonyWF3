@@ -160,7 +160,7 @@ class ArticleController extends Controller
         //on doit remplaçer le nom du fichier image par une instance de File représentant le fichier
         if($article->getImage()) {
             $article->setImage(
-                new File($this->getParameter('articles_image_directory') . '/' . $article->getImage())
+                new File($this->getParameter('image_directory') . '/' . $article->getImage())
             );
         }
 

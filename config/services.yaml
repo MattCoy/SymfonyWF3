@@ -2,7 +2,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
-    articles_image_directory: '%kernel.project_dir%/public/uploads/articles/images'
+    image_directory: '%kernel.project_dir%/public/uploads/images'
 
 services:
     # default configuration for services in *this* file
@@ -30,4 +30,5 @@ services:
 
     App\Service\FileUploader:
         arguments: # on indique à Symfony que lors de l'instanciation, il doit passer un argument
-            $targetDirectory: '%articles_image_directory%' #fait référence à notre paramètre créé plus haut
+            $targetDirectory: '%image_directory%' #fait référence à notre paramètre créé plus haut
+

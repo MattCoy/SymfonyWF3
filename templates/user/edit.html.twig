@@ -1,0 +1,32 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <h1>{{ user.username }}</h1>
+    <div class="row">
+        <div class="col-md-8">
+
+            {# pour afficher tout type de message flash #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            <h1>Upload d'Avatar</h1>
+            <form method="post" enctype="multipart/form-data">
+                <input type="file" name="image">
+                <button type="submit">Envoyer</button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            {% if user.image %}<img src="{{ asset('uploads/images/' ~ user.image) }}" class="img img-thumbnail">{%  endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

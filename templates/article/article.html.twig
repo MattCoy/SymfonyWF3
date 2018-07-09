@@ -5,7 +5,7 @@
 {% block content %}
     <h1>{{ article.title }}</h1>
     <small> publié par <a href="{{ path('userPage' , {id : article.user.id}) }}">{{ article.user.username }}</a>  le {{ article.datepubli|date('d/m/Y') }}</small>
-    {% if article.image %}<img src="{{ asset('uploads/articles/images/' ~ article.image) }}">{%  endif %}
+    {% if article.image %}<img src="{{ asset('uploads/images/' ~ article.image) }}">{%  endif %}
 
     <p>{{ article.content }}</p>
 

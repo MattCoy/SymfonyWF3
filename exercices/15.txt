@@ -1,0 +1,8 @@
+Permettre aux utilisateurs d'uploader une photo
+Créer une page qui va proposer à l'utilisateur connecté d'uploader sa photo
+(lors de l'inscription on ne propose pas d'uploder une photo, ce qui implique que le champ image de la table user peut être null)
+Utiliser un formulaire "à l'ancienne" et $request->files et utiliser le service FileUploader
+On va stocker les images d'articles et les photos utilisateur dans le même dossier
+Afficher la photo sur la page profil utilisateur
+
+Pour l'instant , un utilisateur connecté peut modifier l'article de n'importe qui.
