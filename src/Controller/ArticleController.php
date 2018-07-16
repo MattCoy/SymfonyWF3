@@ -152,7 +152,8 @@ class ArticleController extends Controller
      */
     public function updateArticle(Article $article, Request $request, FileUploader $fileUploader)
     {
-        // le ParamConverter convertit automatiquement l'id en objet Article
+        //on vérifie que l'utilisateur peut modifier l'article = s'il en est l'auteur
+        $this->denyAccessUnlessGranted('edit', $article);
 
         //on stocke le nom du fichier image au cas où aucun fichier n'ai été envoyé
         $fileName = $article->getImage();
@@ -218,7 +219,8 @@ class ArticleController extends Controller
      */
     public function deleteArticle(Article $article)
     {
-        // le ParamConverter convertit automatiquement l'id en objet Article
+        //on vérifie que l'utilisateur peut supprimer l'article = s'il en est l'auteur
+        $this->denyAccessUnlessGranted('delete', $article);
 
         //récupération du manager
         $entityManager = $this->getDoctrine()->getManager();
