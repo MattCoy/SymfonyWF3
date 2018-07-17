@@ -10,6 +10,7 @@ namespace App\Controller;
 
 //le use pour la classe Response que l'on utilise dans la méthode
 use App\Entity\Article;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,10 +26,13 @@ class HomeController extends Controller
      * )
      */
     public function home(){
-        $nom = 'toto';
-        //on envoie une réponse
+
+        $users = $articles = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findAll();
+
         return $this->render('index.html.twig',
-                                    array('nom' => $nom)
+                                    array('users' => $users)
         );
     }
 

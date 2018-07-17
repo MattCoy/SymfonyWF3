@@ -1,0 +1,4 @@
+{# on se contente de faire une boucle sur nos articles : c'est cela qui sera renvoyé en réponse à la requête ajax et affiché dans la div #result#}
+{% for article in articles %}
+<article>{{ article.title }}, publié le {{ article.datepubli|date('d/m/y') }}, <a href="{{ path('article_show', {id: article.id}) }}">voir</a></article>
+{% endfor %}

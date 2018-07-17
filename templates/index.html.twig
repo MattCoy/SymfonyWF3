@@ -11,20 +11,75 @@
 {% block title %}Accueil{% endblock %}
 
 {# le block content va devenir le contenu de la page#}
-{%  block content %}
+{% block content %}
     <h1>Ceci est ma page d'accueil</h1>
+    <div class="row">
+        {# je génère ma liste déroulante grâce à ma liste des utilisateurs#}
+        <div class="col-md-4">
+            <select id="users-list" class="form-control">
+                <option value="0">Choisir un auteur</option>
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4" id="result"></div>
+        <div class="col-md-4" id="result2"></div>
+    </div>
 
-    {# j'appelle le template qui permet d'afficher bonjour nom #}
-    {{ include('bonjour/bonjour.html.twig', {pseudo : nom}) }}
-    {#
-        le template se trouve dans le sous dossier bonjour
-        je lui passe en paramètre l'information nécéssaire à l'affichage
-        pseudo est le nom du paramètre et donc le nom de la variable qui sera utilisée dans bonjour/bonjour.html.twig
-        Nom est ce que l'on souhaite afficher, il a été passé en paramètre de la vue dans le controlleur
-    #}
-
-    <p><a href="bonjour/">Lien vers la page bonjour</a></p>
-    <p><a href="{{ path('bonjourNom', {nom: 'titi'}) }}">Lien vers la page bonjour titi</a></p>
 {% endblock %}
 
-{# pour l'instant, on a pas besoin de remplir le block javascript#}
+{% block js %}
+    {# je crée mon ajax en jquery comme d'hab #}
+    <script>
+        $('#users-list').on('change', function () {
+            //ici , petite subtilité: quand on génère la route avec path(), on ne sait pas encore quel auteur l'utilisateur va choisir
+            //donc je met en paramètre de ma route 0 en dur
+            var url = "{{ path('ajax-search-articles-by-user', {id: '0'}) }}";
+            //console.log(url);
+            //lorsque ce code est exécuté, c'est que l'utlisateur a choisi un auteur
+            //on remplace 0 par l'id de l'auteur choisi
+            url = url.replace('0', $(this).val());
+            //console.log(url);
+            $.ajax({
+                type: 'get',
+                url: url,
+                timeout: 3000,
+                dataType: 'html',
+                success: function (data) {
+                    $('#result').html(data);
+                },
+                error: function (error) {
+                    console.log(error.responseText);
+                }
+            })
+
+            //requête ajax en utilisant post
+            $.ajax({
+                type: 'post',
+                //je fais référence à une nouvelle route, qui va récupérer $_GET["idUser"]
+                url: "{{ path('ajax-search-articles-by-user2') }}",
+                data: "idUser=" + $(this).val(),
+                timeout: 3000,
+                dataType: 'json', //on la fait en json
+                success: function (data) {
+                    //console.log(data);
+                    if(data.status === 'ko'){
+                        $('#result2').html('auteur invalide');
+                    }
+                    else{
+                        $('#result2').empty();
+                        //console.log(data.articles);
+                        $.each(data.articles, function(i, article){
+                            console.log(article);
+                            $('#result2').append($('<article>').html(article.title + ", publié le " + article.datepubli + ", <a href='" + article.url + "'>voir</a>"));
+                        })
+                    }
+                },
+                error: function (error) {
+                    console.log(error.responseText);
+                }
+            })
+        })
+    </script>
+{% endblock %}
