@@ -9,4 +9,8 @@
 
     <p>{{ article.content }}</p>
 
+    {% for tag in article.tags %}
+    {{ tag.libelle }} |
+    {% endfor %}
+
 {% endblock %}

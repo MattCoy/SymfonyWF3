@@ -9,6 +9,8 @@
 namespace App\Form;
 
 
+use App\Entity\Tag;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -26,6 +28,7 @@ class ArticleType extends AbstractType
             ->add('title', TextType::class, array('label'=>'Titre de l\'article'))
             ->add('content', TextareaType::class, array('label'=>'Contenu de l\'article'))
             ->add('image', FileType::class, array('label' => 'image descriptive', 'required' => false))
+            ->add('tags', EntityType::class, array('class' => Tag::class, 'multiple' => true, 'required'=>false))
         ;
     }
 

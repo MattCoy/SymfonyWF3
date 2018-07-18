@@ -10,6 +10,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Article;
 use App\Entity\Categorie;
+use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -65,9 +66,27 @@ class TestData extends Fixture
             $manager->persist($user);
         }
 
+        //on crée 10 tags
+        $tags =['bon', 'mauvais', 'pas mal', 'moyennasse', 'brillant', 'moche', 'insipide', 'sympa', 'génial', 'stupide'];
+        for($i=0; $i <= 9; $i++){
+
+            $tag = new Tag();
+            $tag->setLibelle($tags[$i]);
+            $manager->persist($tag);
+
+            //on remplit un tableau d'objets Tag
+            $tagsObjects[] = $tag;
+
+        }
+
         //on crée 30 articles
 
+        //on crée un tableau qui va référencer les tags liés aux articles
+        $tagsAlreadyLinked = [];
+
         for($i=1; $i <= 30; $i++){
+
+            $tagsAlreadyLinked[$i] = [];
 
             $article = new Article();
 
@@ -87,6 +106,18 @@ class TestData extends Fixture
             $article->setDatePubli(new \DateTime($randomDate));
 
             $article->setUser($auteurs[array_rand($auteurs)]);
+
+            $nb = rand(0,5);
+
+            for($j=1;$j<=$nb;$j++){
+                //on choisit l'objet Tag au hasard
+                $tag = $tagsObjects[array_rand($tagsObjects)];
+                //s'il n'est pas déjà lié à cet article, on le rajoute
+                if(!in_array($tag,$tagsAlreadyLinked[$i])){
+                    $tagsAlreadyLinked[$i][] = $tag;
+                        $article->addTag($tag);
+                }
+            }
 
             $manager->persist($article);
 

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -53,11 +55,25 @@ class Article
     private $user;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      *
      * @Assert\Image
      */
     private $image;
+
+    /**
+     * Relation ManyToMany :un article peut avoir plusieurs tags
+     * et un tag peut être associé à plusieurs articles
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles")
+     * @ORM\JoinTable(name="articles_tags",
+     *      joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")})
+     */
+    private $tags;
+
+    public function __construct() {
+        $this->tags = new ArrayCollection();
+    }
 
 
     public function getId()
@@ -123,5 +139,17 @@ class Article
         $this->image = $image;
 
         return $this;
+    }
+
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag)
+    {
+        //Article est le côté "propriétaire" de la relation
+        $tag->addArticle($this); // on met à jour l'autre côté de la relation ManyToMany
+        $this->tags[] = $tag;
     }
 }
